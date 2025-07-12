@@ -1,0 +1,101 @@
+body{
+    background-color: black;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;  /* center horizontally */
+    align-items: center!important;      /* center vertically */
+    font-family: sans-serif;
+  }
+
+  .main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10rem;
+  }
+
+  .tracker{
+    color: bisque;
+  }
+
+.formstarts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.wishlist-input{
+    font-size: large;
+    font-family: monospace;
+    width: 300px;
+    padding: 5px;
+    margin: 5px;
+}
+.wishlist-input:hover{
+    box-shadow: 2px 4px 8px 0 rgba(250, 247, 247, 0.944);
+    border-radius: 10%;
+    transition: 0.4s ease;
+}
+
+.add-btn{
+    background-color: rgb(0, 119, 255);
+    color: white;
+    padding: 8px 15px ;
+    border-radius: 15%;
+    }
+
+.todo-task{
+    color:antiquewhite;
+    max-width: 300px;
+    width:100%;
+    padding:5px;
+    margin:10px;
+}
+
+.checked{
+    text-decoration: line-through;
+}
+
+.progress-wrapper {
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  .progress-bar {
+    background: #eee;
+    height: 10px;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    background: #4caf50;
+    height: 100%;
+    width: 0%;
+    transition: width 0.9s ease;
+  }
+  
+  .progress-message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: antiquewhite;
+  }
+
+  @media (max-width: 768px) {
+    .form {
+        width: 100%;
+        padding: 0 45%;
+      }
+    
+      /* .add-btn {
+        
+      } */
+    }
+  
