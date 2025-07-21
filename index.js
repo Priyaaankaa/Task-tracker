@@ -23,41 +23,80 @@ addBtn.addEventListener("click",(e)=>{
     inputBox.value = "";
 })
 
-showTodos.addEventListener("click",(e) =>{
+showTodos.addEventListener("click", (e) => {
     let key = e.target.dataset.key;
     let delTodoKey = e.target.dataset.todokey;
-    todoList = todoList.map(todo => todo.id === key ?{...todo, isCompleted: !todo.isCompleted} : todo);
-    todoList = todoList.filter(todo => todo.id !== delTodoKey);
-    console.log(todoList);
-    renderTodoList(todoList);
+  
+    if (delTodoKey) {
+      const taskToRemove = e.target.closest(".todo-item");
+      gsap.to(taskToRemove, {
+        opacity: 0,
+        scale: 0.7,
+        duration: 0.3,
+        ease: "power1.in",
+        onComplete: () => {
+          todoList = todoList.filter(todo => todo.id !== delTodoKey);
+          renderTodoList(todoList);
+        }
+      });
+    } else {
+      // Toggle complete
+      todoList = todoList.map(todo => todo.id === key ? { ...todo, isCompleted: !todo.isCompleted } : todo);
+      renderTodoList(todoList);
+    }
+  });
+  
 
-})
 
-
-function renderTodoList(todoList){
-    showTodos.innerHTML = todoList.map(({id,inputValue,isCompleted}) =>
-    `<div><input type= "checkbox" id = "item-${id}" data-key = "${id}" ${isCompleted? "checked":""}>
-    <label data-key= "${id}" id= "${id}" class="todo-task ${isCompleted? "checked":""}" > ${inputValue} </label>
-    <button data-todokey = "${id}" id = "item-${id}">❌</button></div>`)
-
-    // Progress calculation
+  function renderTodoList(todoList) {
+    showTodos.innerHTML = "";
+  
+    todoList.forEach(({ id, inputValue, isCompleted }) => {
+      const taskDiv = document.createElement("div");
+      taskDiv.classList.add("todo-item");
+      taskDiv.innerHTML = `
+        <input type="checkbox" id="item-${id}" data-key="${id}" ${isCompleted ? "checked" : ""}>
+        <label data-key="${id}" id="${id}" class="todo-task ${isCompleted ? "checked" : ""}">
+          ${inputValue}
+        </label>
+        <button data-todokey="${id}" id="item-${id}" class="delete-btn">🗑️</button>
+      `;
+  
+      showTodos.appendChild(taskDiv);
+  
+      // Animate new task: fade + pop
+      gsap.from(taskDiv, {
+        opacity: 0,
+        scale: 0.9,
+        y: -10,
+        duration: 0.4,
+        ease: "back.out(1.7)"
+      });
+    });
+  
+    // Animate progress bar width
     const total = todoList.length;
     const completed = todoList.filter(todo => todo.isCompleted).length;
     const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-    // Update progress bar width
-    document.querySelector('.progress-fill').style.width = `${percent}%`;
-
-    // Update progress message
+  
+    gsap.to(".progress-fill", {
+      width: `${percent}%`,
+      duration: 0.4,
+      ease: "power1.out"
+    });
+  
     const progressMsg = document.querySelector('.progress-message');
     if (total === 0) {
-        progressMsg.textContent = "🧐Add some tasks to get started!";
+      progressMsg.textContent = "🧐 Add some tasks to get started!";
     } else if (percent === 100) {
-        progressMsg.textContent = "🎉 All tasks completed!";
+      progressMsg.textContent = "🎉 All tasks completed!";
     } else if (percent > 0) {
-        progressMsg.textContent = `✅ ${completed} of ${total} tasks completed`;
+      progressMsg.textContent = `✅ ${completed} of ${total} tasks completed`;
     } else {
-        progressMsg.textContent = "⏱️Start completing your tasks!";
+      progressMsg.textContent = "⏱️ Start completing your tasks!";
     }
-}
+  }
+  
+  
 renderTodoList(todoList);
+
